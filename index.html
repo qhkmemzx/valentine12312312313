@@ -115,33 +115,30 @@ function heartb(k) {
          - Math.cos(4 * k);
 }
 let i = 0;
-let waiting = false;
 
 function animate() {
-    ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transform
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.translate(canvas.width / 2, canvas.height / 2 - 60);
-    ctx.beginPath();
-
-    let i = 0;
-    function loop() {
-        let k = i * 0.02;          // speed factor
-        ctx.lineTo(hearta(k) * 20, -heartb(k) * 20);
-        ctx.stroke();
-
-        i += 10;                   // faster increment
-        if (i < 6000) {
-            requestAnimationFrame(loop);
-        } else {
-            i = 0;                  // reset to start
-            requestAnimationFrame(loop); // immediately loop again
-        }
+    // Clear and reset canvas every frame if starting a new heart
+    if (i === 0) {
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.translate(canvas.width / 2, canvas.height / 2 - 60);
+        ctx.beginPath();
     }
 
-    loop();
+    if (i < 6000) {
+        let k = i * 0.02;  // increase speed
+        ctx.lineTo(hearta(k) * 20, -heartb(k) * 20);
+        ctx.stroke();
+        i += 10;           // faster drawing
+    } else {
+        i = 0;             // reset for next loop
+    }
+
+    requestAnimationFrame(animate);
 }
 
 animate();
+
 
 
 
@@ -171,6 +168,7 @@ yesBtn.onclick = () => {
 
 </body>
 </html>
+
 
 
 
