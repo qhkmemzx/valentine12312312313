@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>be my valentine</title>
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    color: pink;
+}
+
+canvas {
+    display: block;
+}
+
+/* Dear Aneta text (BIGGER) */
+#dear {
+    position: absolute;
+    top: 30px;
+    width: 100%;
+    text-align: center;
+    font-size: 42px;
+    font-weight: bold;
+}
+
+/* Text box */
+#box {
+    position: absolute;
+    top: 95%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 28px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 30px 40px;
+    border-radius: 15px;
+    border: 2px solid pink;
+}
+
+/* ✅ PHOTOS (FIXED — now inside style) */
+#photos {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+#photos img {
+    width: 90px;
+    height: auto;
+    border-radius: 10px;
+    border: 2px solid pink;
+    box-shadow: 0 0 10px hotpink;
+    transition: transform 0.3s;
+}
+
+#photos img:hover {
+    transform: scale(1.2);
+}
+</style>
+</head>
+
+<body>
+
+<div id="dear">Dear Anetaaa</div>
+
+<canvas id="canvas"></canvas>
+
+<div id="photos">
+    <img src="robloxheart.jpg">
+    <img src="lego.jpg">
+    <img src="dancing.jpg">
+    <img src="harry.jpg">
+    <img src="67.jpg">
+</div>
+
+<div id="box">
+    <h1>Happy Valentinesssss</h1>
+    <div id="arrow"></div>
+    <button id="yes">Yes</button>
+    <button id="no">No</button>
+</div>
+
+<script>
+/* ---------- HEART OUTLINE ANIMATION ---------- */
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+ctx.translate(canvas.width / 2, canvas.height / 2 - 60);
+ctx.strokeStyle = "pink";
+ctx.lineWidth = 2;
+
+function hearta(k) {
+    return 15 * Math.sin(k) ** 3;
+}
+
+function heartb(k) {
+    return 12 * Math.cos(k)
+         - 5 * Math.cos(2 * k)
+         - 2 * Math.cos(3 * k)
+         - Math.cos(4 * k);
+}
+
+let i = 0;
+ctx.beginPath();
+
+function animate() {
+    if (i < 6000) {
+        let k = i * 0.01;
+        ctx.lineTo(hearta(k) * 20, -heartb(k) * 20);
+        ctx.stroke();
+        i += 3;
+        requestAnimationFrame(animate);
+    }
+}
+
+animate();
+
+/* ---------- BUTTON LOGIC ---------- */
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+const box = document.getElementById("box");
+const arrow = document.getElementById("arrow");
+
+let yesScale = 1;
+let arrowCount = 0;
+
+noBtn.onclick = () => {
+    yesScale += 0.4;
+    yesBtn.style.transform = `scale(${yesScale})`;
+
+    arrow.style.display = "block";
+    arrowCount++;
+    arrow.innerHTML = "⬇".repeat(arrowCount);
+    arrow.style.fontSize = `${30 + arrowCount * 10}px`;
+};
+
+yesBtn.onclick = () => {
+    box.innerHTML = "<h1>yay<br>i can’t wait </h1>";
+};
+</script>
+
+</body>
+</html>
