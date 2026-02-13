@@ -114,30 +114,37 @@ function heartb(k) {
          - 2 * Math.cos(3 * k)
          - Math.cos(4 * k);
 }
-
 let i = 0;
+let waiting = false;
 
 function animate() {
-    if (i === 0) {
+    if (!waiting && i === 0) {
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.translate(canvas.width / 2, canvas.height / 2 - 60);
         ctx.beginPath();
     }
 
-    if (i < 6000) {
+    if (!waiting && i < 6000) {
         let k = i * 0.01;
         ctx.lineTo(hearta(k) * 20, -heartb(k) * 20);
         ctx.stroke();
         i += 3;
-    } else {
-        i = 0;
+    }
+
+    if (i >= 6000 && !waiting) {
+        waiting = true;
+        setTimeout(() => {
+            i = 0;
+            waiting = false;
+        }, 800); // pause before restart
     }
 
     requestAnimationFrame(animate);
 }
 
 animate();
+
 
 
 /* ---------- BUTTON LOGIC ---------- */
@@ -166,6 +173,7 @@ yesBtn.onclick = () => {
 
 </body>
 </html>
+
 
 
 
