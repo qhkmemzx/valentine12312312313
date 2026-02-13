@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>valentine</title>
+<title>Valentine</title>
 
 <style>
 html, body {
@@ -20,7 +20,7 @@ canvas {
     display: block;
 }
 
-/* Dear Aneta text (BIGGER) */
+/* Dear Aneta text */
 #dear {
     position: absolute;
     top: 30px;
@@ -44,7 +44,7 @@ canvas {
     border: 2px solid pink;
 }
 
-/* ✅ PHOTOS (FIXED — now inside style) */
+/* Photos */
 #photos {
     position: absolute;
     top: 60%;
@@ -92,6 +92,28 @@ canvas {
     <button id="no">No</button>
 </div>
 
+<!-- Spotify Player -->
+<div id="spotify-player" style="
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 80px;
+    z-index: 1000;
+">
+  <iframe 
+      data-testid="embed-iframe"
+      style="border-radius:12px" 
+      src="https://open.spotify.com/embed/track/3azJifCSqg9fRij2yKIbWz?utm_source=generator" 
+      width="100%" 
+      height="80" 
+      frameBorder="0" 
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+      loading="lazy">
+  </iframe>
+</div>
+
 <script>
 /* ---------- HEART OUTLINE ANIMATION ---------- */
 const canvas = document.getElementById("canvas");
@@ -114,33 +136,30 @@ function heartb(k) {
          - 2 * Math.cos(3 * k)
          - Math.cos(4 * k);
 }
+
 let i = 0;
 
 function animate() {
-    // Clear and reset canvas every frame if starting a new heart
     if (i === 0) {
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.setTransform(1, 0, 0, 1, 0, 0); // reset canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.translate(canvas.width / 2, canvas.height / 2 - 60);
         ctx.beginPath();
     }
 
     if (i < 6000) {
-        let k = i * 0.02;  // increase speed
+        let k = i * 0.02;  // faster speed
         ctx.lineTo(hearta(k) * 20, -heartb(k) * 20);
         ctx.stroke();
         i += 10;           // faster drawing
     } else {
-        i = 0;             // reset for next loop
+        i = 0;             // reset to start over
     }
 
     requestAnimationFrame(animate);
 }
 
 animate();
-
-
-
 
 /* ---------- BUTTON LOGIC ---------- */
 const yesBtn = document.getElementById("yes");
@@ -168,13 +187,3 @@ yesBtn.onclick = () => {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
