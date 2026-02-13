@@ -116,7 +116,6 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-ctx.translate(canvas.width / 2, canvas.height / 2 - 60);
 ctx.strokeStyle = "pink";
 ctx.lineWidth = 2;
 
@@ -132,22 +131,38 @@ function heartb(k) {
 }
 
 let i = 0;
+let paused = false;
+
+function startHeart() {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.translate(canvas.width / 2, canvas.height / 2 - 60);
+    ctx.beginPath();
+    ctx.moveTo(hearta(0) * 20, -heartb(0) * 20);
+}
+
+startHeart();
 
 function animate() {
-    if (i === 0) {
-        ctx.setTransform(1, 0, 0, 1, 0, 0); // reset canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.translate(canvas.width / 2, canvas.height / 2 - 60);
-        ctx.beginPath();
-    }
-
-    if (i < 6000) {
-        let k = i * 0.02;  // faster speed
+    if (!paused) {
+        let k = i * 0.01;
         ctx.lineTo(hearta(k) * 20, -heartb(k) * 20);
         ctx.stroke();
-        i += 10;           // faster drawing
-    } else {
-        i = 0;             // reset to start over
+        i += 4; // ⏱ draw speed (~6s)
+
+        if (i >= 6000) {
+            paused = true;
+
+            // ✅ CLEAR IMMEDIATELY when finished
+            setTimeout(() => {
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                i = 0;
+                startHeart();
+                paused = false;
+            }, 500); // pause duration
+        }
     }
 
     requestAnimationFrame(animate);
@@ -155,9 +170,12 @@ function animate() {
 
 animate();
 
+
+
+
+
 </script>
 
 </body>
 </html>
-
 
